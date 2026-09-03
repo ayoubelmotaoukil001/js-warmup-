@@ -11,13 +11,13 @@ function calculateTotal(some,vente)
 {
     return some+vente.montant  ;
 }
-const totalVentes = ventes.reduce(calculateTotal ,0) ;
+const totalVentes = ventes.reduce(calculateTotal ,0) ;0
 
 const theMust = ventes.reduce(theMax,ventes[0]) ;
 
 function theMax(max, vente)
 {
-    if(vente.montant > max.montant)
+    if(vente.montant > max.montant)agy
     {
        return vente ;
     }
