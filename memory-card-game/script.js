@@ -20,24 +20,38 @@ let boardLokc = false;
 
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
+        const j = Math.floor(Math.random() * (i + 1)) ;
         [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
 }
 function initGame() {
+    cardGrid.innerHTML="" ;
     const gameCards = shuffle([...cards, ...cards]);
-    gameCards.forEach(card => {
-        const cardElement = document.createElement("div");
-        cardElement.classList.add("card");
-        cardElement.dataset.id = card.id;
-        cardElement.innerHTML = `
-         <div class="card-front">
-         <img src="${card.image}" alt="${card.id}">
-        </div>
-        <div class="card-back">?</div>  `
-        cardElement.addEventListener("click", () => flippedCard(cardElement));
-        cardGrid.appendChild(cardElement);
+    gameCards.forEach(card=> {
+        const cardElement = document.createElement("div") ;
+        cardElement.classList.add("card") ;
+        cardElement.dataset.id = card.id ;
+
+        const cardFront = document.createElement("div") ;
+        cardFront.classList.add("card-front") ;
+
+        const cardImage = document.createElement("img") ;
+        cardImage.src = card.image ;
+        cardImage.alt = card.id ;
+        cardFront.appendChild(cardImage) ;
+
+
+        const cardBack = document.createElement("div") ;
+        cardBack.classList.add("card-back") ;
+        cardBack.textContent = "?" ;
+
+
+        cardElement.appendChild(cardFront) ;
+        cardElement.appendChild(cardBack) ;
+        
+        cardElement.addEventListener("click" , ()=> flippedCard(cardElement)) ;
+        cardGrid.appendChild(cardElement) ;
     });
 }
 function flippedCard(cardElement) {
@@ -84,3 +98,16 @@ function checkMatch() {
         }, 1000);
     }
 }
+function resetGame()
+{
+    movesCount =0;
+    pairesCount=0;
+    flippedCards = [] ;
+    boardLokc =false ; 
+    moves.textContent = 0 ;
+    paires.textContent =0 ;
+    winMessage.classList.add("hidden") ;
+    initGame() ;
+}
+restartButoon.addEventListener("click" , resetGame) ;
+initGame() ;
