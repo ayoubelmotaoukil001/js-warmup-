@@ -17,7 +17,7 @@ const theMust = ventes.reduce(theMax,ventes[0]) ;
 
 function theMax(max, vente)
 {
-    if(vente.montant > max.montant)agy
+    if(vente.montant > max.montant)
     {
        return vente ;
     }
