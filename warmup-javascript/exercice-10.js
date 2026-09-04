@@ -13,7 +13,6 @@ function calculateTotal(some,vente)
 }
 const totalVentes = ventes.reduce(calculateTotal ,0) ;
 
-
 const theMust = ventes.reduce(theMax,ventes[0]) ;
 
 function theMax(max, vente)
