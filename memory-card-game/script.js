@@ -40,27 +40,47 @@ function initGame() {
         cardGrid.appendChild(cardElement);
     });
 }
-function flippedCard(cardElement)
-{
-    if(boardLokc == true)
-        {
-            return ;
-        }
-    if(cardElement.classList.contains("flipped"))
-    {
-        return ;
+function flippedCard(cardElement) {
+    if (boardLokc == true) {
+        return;
     }
-    if(cardElement.classList.contains("matched"))
-    {
-        return ;
+    if (cardElement.classList.contains("flipped")) {
+        return;
     }
-    cardElement.classList.add("flipped") ;
+    if (cardElement.classList.contains("matched")) {
+        return;
+    }
+    cardElement.classList.add("flipped");
     flippedCards.push(cardElement);
 
-    if(flippedCards.length== 2)
-    {
-        movesCount++ ;
-        moves.textContent = movesCount ;
-        checkMatch() ;
+    if (flippedCards.length == 2) {
+        movesCount++;
+        moves.textContent = movesCount;
+        checkMatch();
+    }
+}
+function checkMatch() {
+    const card1 = flippedCards[0];
+    const card2 = flippedCards[1];
+
+    const ismatch = card1.dataset.id === card2.dataset.id;
+    if (ismatch) {
+        card1.classList.add("matched");
+        card2.classList.add("matched");
+        pairesCount++;
+        paires.textContent = pairesCount;
+        flippedCards = [];
+        if (pairesCount === cards.length) {
+            winMessage.classList.remove("hidden");
+        }
+    }
+    else {
+        boardLokc = true;
+        setTimeout(() => {
+            card1.classList.remove("flipped");
+            card2.classList.remove("flipped");
+            flippedCards = [];
+            boardLokc = false;
+        }, 1000);
     }
 }
