@@ -26,4 +26,20 @@ function shuffle (array)
     }
     return array ;
 }
-
+function initGame()
+{
+    const gameCards = shuffle([...cards , ...cards]) ;
+    gameCards.forEach(card => {
+        const cardElement = document.createElement("div") ;
+        cardElement.classList.add("card") ;
+        cardElement.dataset.id = card.id ;
+        cardElement.innerHTML = `
+         <div class="card-front">
+         <img src="${card.image}" alt="${card.id}">
+        </div>
+        <div class="card-back">?</div>  `
+        cardElement.addEventListener("click" , ()=> flippedCard(cardElement)) ;
+        cardGrid.appendChild(cardElement) ;
+    });
+    
+}
