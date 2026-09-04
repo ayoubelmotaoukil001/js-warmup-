@@ -1,0 +1,113 @@
+const cards = [
+    { id: "react", image: "https://placehold.co/150x200/20232a/61dafb?text=React" },
+    { id: "html", image: "https://placehold.co/150x200/e34f26/ffffff?text=HTML" },
+    { id: "css", image: "https://placehold.co/150x200/1572b6/ffffff?text=CSS" },
+    { id: "js", image: "https://placehold.co/150x200/f7df1e/000000?text=JS" },
+    { id: "git", image: "https://placehold.co/150x200/f05032/ffffff?text=Git" },
+    { id: "node", image: "https://placehold.co/150x200/339933/ffffff?text=Node" }
+];
+
+const cardGrid = document.getElementById("grid");
+const restartButoon = document.getElementById("restart");
+const moves = document.getElementById("moves");
+const paires = document.getElementById("pairs");
+const winMessage = document.getElementById("win-message");
+
+let flippedCards = [];
+let movesCount = 0;
+let pairesCount = 0;
+let boardLokc = false;
+
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1)) ;
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+function initGame() {
+    cardGrid.innerHTML="" ;
+    const gameCards = shuffle([...cards, ...cards]);
+    gameCards.forEach(card=> {
+        const cardElement = document.createElement("div") ;
+        cardElement.classList.add("card") ;
+        cardElement.dataset.id = card.id ;
+
+        const cardFront = document.createElement("div") ;
+        cardFront.classList.add("card-front") ;
+
+        const cardImage = document.createElement("img") ;
+        cardImage.src = card.image ;
+        cardImage.alt = card.id ;
+        cardFront.appendChild(cardImage) ;
+
+
+        const cardBack = document.createElement("div") ;
+        cardBack.classList.add("card-back") ;
+        cardBack.textContent = "?" ;
+
+
+        cardElement.appendChild(cardFront) ;
+        cardElement.appendChild(cardBack) ;
+        
+        cardElement.addEventListener("click" , ()=> flippedCard(cardElement)) ;
+        cardGrid.appendChild(cardElement) ;
+    });
+}
+function flippedCard(cardElement) {
+    if (boardLokc == true) {
+        return;
+    }
+    if (cardElement.classList.contains("flipped")) {
+        return;
+    }
+    if (cardElement.classList.contains("matched")) {
+        return;
+    }
+    cardElement.classList.add("flipped");
+    flippedCards.push(cardElement);
+
+    if (flippedCards.length == 2) {
+        movesCount++;
+        moves.textContent = movesCount;
+        checkMatch();
+    }
+}
+function checkMatch() {
+    const card1 = flippedCards[0];
+    const card2 = flippedCards[1];
+
+    const ismatch = card1.dataset.id === card2.dataset.id;
+    if (ismatch) {
+        card1.classList.add("matched");
+        card2.classList.add("matched");
+        pairesCount++;
+        paires.textContent = pairesCount;
+        flippedCards = [];
+        if (pairesCount === cards.length) {
+            winMessage.classList.remove("hidden");
+        }
+    }
+    else {
+        boardLokc = true;
+        setTimeout(() => {
+            card1.classList.remove("flipped");
+            card2.classList.remove("flipped");
+            flippedCards = [];
+            boardLokc = false;
+        }, 1000);
+    }
+}
+function resetGame()
+{
+    movesCount =0;
+    pairesCount=0;
+    flippedCards = [] ;
+    boardLokc =false ; 
+    moves.textContent = 0 ;
+    paires.textContent =0 ;
+    winMessage.classList.add("hidden") ;
+    initGame() ;
+}
+restartButoon.addEventListener("click" , resetGame) ;
+initGame() ;
